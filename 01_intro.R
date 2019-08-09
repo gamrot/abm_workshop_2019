@@ -26,7 +26,7 @@ BB <- matrix(data = 0, ncol = 1, nrow = Time) ## aggregate prod
 ## main program
 for(t in 2:Time) {
     I <- gamma * Z # investment choice
-    I[Z<0] <- 0
+    I[I<0] <- 0
     K <- K * (1 - delta) + I # capital accumulation
     Y <- phi * K # production
     B <- K - A # debt
