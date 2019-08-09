@@ -1,6 +1,8 @@
 ### toymodel
 ## chooseCRANmirror(graphics = FALSE)
 
+rm(list = ls())
+
 set.seed(15)
 
 Time <- 1000
@@ -11,6 +13,7 @@ phi <- 0.1 ## capital productivity
 r <- 0.1 ## interest rate
 Pbar <- 0.01 ## random price drift
 delta <- 0.05 ## depreciacion rate
+r_bar <- 0.075 ## base interest rate
 
 A <- matrix(data = 1, ncol = 1, nrow = Ni) ## net worth
 K <- matrix(data = 1, ncol = 1, nrow = Ni) ## capital
@@ -22,6 +25,8 @@ Z <- matrix(2 * runif (Ni) + Pbar , ncol = 1, nrow = Ni) ## profit
 YY <- matrix(data = 0, ncol = 1, nrow = Time) ## aggregate prod
 AA <- matrix(data = 0, ncol = 1, nrow = Time) ## aggregate prod
 BB <- matrix(data = 0, ncol = 1, nrow = Time) ## aggregate prod
+RR <- matrix(data = 0, ncol = 1, nrow = Time) ## interest rate payment
+r <- matrix(data = 0, ncol = 1, nrow = Ni) ## interest rate
 
 ## main program
 for(t in 2:Time) {
@@ -32,6 +37,9 @@ for(t in 2:Time) {
     B <- K - A ## debt
     B[B<0] <- 0 ## self-financed firms
     P <- 2 * runif(Ni) + Pbar ## stochastic price
+    r <-  r_bar + r_bar * (B/A)^r_bar
+    int <- r * B
+    RR[t] <- sum(int) / sum(B)
     Z <- P * Y - r * K ## profit
     A <- A + Z ## net worth
     Z[A<0] <- 0 ## entry condition
@@ -43,28 +51,37 @@ for(t in 2:Time) {
 }
 
 ## aggregate production
-plot(2:Time,
-     log(YY[2:Time, 1]),
+plot(200:Time,
+     log(YY[200:Time, 1]),
      type = 'l',
-     ylim = range(log(YY[2:Time])),
+     ylim = range(log(YY[200:Time])),
      col = 1,
      ylab = 'log(YY)',
      xlab = 't')
 
 ## net worth
-plot(2:Time,
-     log(AA[2:Time, 1]),
+plot(200:Time,
+     log(AA[200:Time, 1]),
      type = 'l',
-     ylim = range(log(AA[2:Time])),
+     ylim = range(log(AA[200:Time])),
      col = 1,
      ylab = 'log(AA)',
      xlab = 't')
 
 ## aggregate debt
-plot(2:Time,
-     log(BB[2:Time, 1]),
+plot(200:Time,
+     log(BB[200:Time, 1]),
      type = 'l',
-     ylim = range(log(BB[2:Time])),
+     ylim = range(log(BB[200:Time])),
      col = 1,
      ylab = 'log(BB)',
+     xlab = 't')
+
+## aggregate interest rate payments
+plot(200:Time,
+     log(RR[200:Time, 1]),
+     type = 'l',
+     ylim = range(log(RR[200:Time])),
+     col = 1,
+     ylab = 'log(RR)',
      xlab = 't')
