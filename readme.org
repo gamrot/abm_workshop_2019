@@ -1,0 +1,2 @@
+Notes and code snippets from Agent Based Modelling workshop
+conducted by Alberto Russo in Poznań (Poland) in August 2019.
