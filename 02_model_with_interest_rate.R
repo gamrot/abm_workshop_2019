@@ -1,10 +1,9 @@
-### toymodel
-## chooseCRANmirror(graphics = FALSE)
-
+## CRAN mirror, seet etc ----
 rm(list = ls())
-
+chooseCRANmirror(1)
 set.seed(15)
 
+## parameters ----
 Time <- 1000
 Ni <- 100
 
@@ -15,6 +14,7 @@ Pbar <- 0.01 ## random price drift
 delta <- 0.05 ## depreciacion rate
 r_bar <- 0.075 ## base interest rate
 
+## data structures ----
 A <- matrix(data = 1, ncol = 1, nrow = Ni) ## net worth
 K <- matrix(data = 1, ncol = 1, nrow = Ni) ## capital
 B <- matrix(data = 0, ncol = 1, nrow = Ni) ## debt
@@ -28,7 +28,7 @@ BB <- matrix(data = 0, ncol = 1, nrow = Time) ## aggregate prod
 RR <- matrix(data = 0, ncol = 1, nrow = Time) ## interest rate payment
 r <- matrix(data = 0, ncol = 1, nrow = Ni) ## interest rate
 
-## main program
+## main program ----
 for(t in 2:Time) {
     I <- gamma * Z ## investment choice
     I[I<0] <- 0
@@ -49,6 +49,8 @@ for(t in 2:Time) {
     AA[t] <- sum(A) ## net worth
     BB[t] <- sum(B) ## aggregate debt
 }
+
+## plots ----
 
 ## aggregate production
 plot(200:Time,
